@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		#wrap {
+			width: 500px;
+			border-radius: 15px;
+			margin: 90px auto;
+			border: 1px solid black;
+			background: #58a;
+			padding: 20px;
+		}
+		p {
+			margin: 0;
+		}
+		input,
+		textarea {
+			vertical-align: top;
+			border: none;
+			outline: none;
+			padding: 10px;
+			line-height: 30px;
+			font: inherit;
+			box-sizing: border-box;
+			width: 100%;
+			margin-bottom: 20px;
+		}
+		textarea {
+			height: 200px;
+			font: inherit;
+		}
+		#head {
+			width: 100%;
+			box-sizing: border-box;
+			background: #fb3;
+			padding: 6px;
+			text-align: center;
+		}
+		ul {
+			perspective: 2000px;
+			margin: 0;
+			padding: 0;
+			max-height: 200px;
+			overflow: auto;
+			list-style: none;
+		}
+		ul li {
+			transform-style: preserve-3d;
+			margin: 5px;
+			transition: 2s;
+			transform : rotateY(90deg);
+		}
+		#head + div {
+			width: 100%;
+			text-align: center;
+			line-height: 100px;
+			background: #fff;
+		}
+		ul header {
+			background: #ccc;
+			line-height: 30px;
+			padding: 0 8px;
+			height: 30px;
+		}
+		ul p {
+			padding: 10px;
+			background: #fff;
+		}
+		ul header span {
+			float: left;
+		}
+		ul header time {
+			float: right;
+		}
+		.delet {
+			display: none;
+			float: left;
+			padding: 0 5px;
+			margin-left: 20px;
+			color: #fff;
+			background: #58a;
+		}
+	</style>
+
+	<!-- <script src = "js/move.js"></script> -->
+	<script src="js/jquery-3.1.1.js"></script>
+</head>
+<body>
+	<div id="wrap">
+		<div id="content">
+			<input type="text" name="" id="title" placeholder="请输入标题" value="">
+			<textarea id = "note" placeholder="请输入内容" id = "text"></textarea>
+		</div>
+		<input type="button" value="提交留言">
+		<header id="head">显示留言</header>
+		<div id="sofa">
+			—— 抢沙发 ——
+		</div>
+		<ul id="message">
+		</ul>
+	</div>
+	<script>
+		;(function(){
+			;(function (global, factory){
+				factory(global);
+			})(window,function (global, noGlobal) {
+				function M (obj) {
+					return new M.prototype.inite(obj);
+				};
+				M.prototype = {
+					constructor: M,
+					inite: function (obj) {
+						this.obj = obj;
+					},
+					getValue: function () {
+						return this.obj.val();
+					},
+					setCon: function (fn) {
+						var str = 	'<div style="overflow: hidden; height: 68px;">\
+										<header>\
+											<span>'+ $('#content input:text').val() +'</span>\
+											<time>' +this.getTime()+ '</time>\
+											<span class = "delet">删除</span>\
+										</header>\
+										<p>'+ $('#content textarea').val() +'</p>\
+									</div>';
+						var li = $('<li>' + str + '</li>');
+						var $span = $('header .delet');
+						this.obj.prepend(li);
+						$('#content input:text').val('');
+						$('#content textarea').val('');
+						(typeof fn !== 'undefined') && fn.call(this.obj, li);
+						return this.obj;
+					},
+					getTime: function () {
+						var time = new Date();
+						var year = time.getFullYear();
+						var month = time.getMonth()+1;
+						var data = time.getDay();
+						var day = time.getDate();
+						var hour = time.getHours();
+						var min = time.getMinutes();
+						var sec = time.getSeconds();
+						function setLayOut (num) {
+							return num < 10 ? '0'+num : ''+num;
+						}
+						var str = year + "-" + setLayOut(month) +"-" + setLayOut(day) + " " + setLayOut(hour) + ":" + setLayOut(min) + ":" + setLayOut(sec);
+						return str;
+					},
+					hover: function (target) {
+						this.obj.hover(function () {
+							target.show();
+						}, function () {
+							target.hide();
+						})
+					},
+					showHide: function () {
+						console.log(this.obj);
+						this.obj.toggle(800);
+					}
+				};
+
+				M.prototype.inite.prototype = M.prototype;
+				window.M = M;
+			});
+
+			$('input:button').click(function () {
+				if ($('#content input:text').val().length == '' || $('#content textarea').val() == '') {
+					alert('请输入完整内容');
+					return false;
+				}
+				addEv.apply(this);
+			});
+
+			var addEv = function () {
+				var onOff = true;
+				var $sofa = $('#sofa');
+				var height = $sofa.css('height');
+				var index = 0;
+				var color = ['#fff', '#ccc']
+				set ();
+				addEv = set;
+				function set () {
+					if (onOff) {
+
+						M($sofa).showHide();
+						onOff = false;
+
+						/*$sofa.animate({opacity:0, height:0}, 800, function () {
+							$(this).hide();
+						}).fadeOut('slow');*/
+						// addEv = set;
+					}
+
+					M($('#message')).setCon(function (obj, delet) {
+
+						var _self = $(this);
+						// obj.get(0).style.transform = 'rotateY(0deg)';
+						var delet = obj.find('span:eq(1)');
+						var p = obj.find('p');
+
+						index++;
+
+						obj.css('transform','rotateY(0deg)');
+
+						if (typeof delet !== 'undefined') {
+
+							M(obj).hover(delet);
+
+							delet.click(function () {
+								$(this).closest('li').remove();
+								if (_self.children().length == 0) {
+									M($sofa).showHide();
+									onOff = true;
+									// $('#sofa').show();
+									// $('#sofa').animate({opacity:1, height:height}, 800);
+								}
+							})
+						};
+
+						if (typeof p !== 'undefined') {
+							p.css('background-color', color[index%2])
+						};
+					});
+				};
+			}
+		})();
+	</script>
+</body>
+</html>
