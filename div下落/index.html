@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        #wrap {
+            width: 800px;
+            margin: 50px auto;
+            border: 1px solid black;
+        }
+        ul {
+            height: 600px;
+            font-size: 0;
+            line-height: 0;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        li {
+            position: relative;
+            border-radius: 100%;
+            width: 80px;
+            height: 80px;
+            background: #58a;
+            display: inline-block;
+            line-height: 80px;
+            font-size: 50px;
+            border: 2px solid #fff;
+            text-align: center;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <ul id="box">
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li>6</li>
+            <li>7</li>
+            <li>8</li>
+            <li>9</li>
+        </ul>
+    </div>
+    <!-- <script src="move.js"></script> -->
+    <script src = 'js/jquery-3.1.1.js'></script>
+    <script>
+        ;(function(){
+            var down = false;
+            $('ul').click(function (ev) {
+                if ($('ul li:animated')[0]) {
+                    return false;
+                }
+                var $target = $(ev.target),
+                    pre = $target,
+                    nex = $target,
+                    timer;
+                down = !down;
+                var h = down ? $(this).height() : 0;
+                $target.animate({top:h}, 1000);
+                timer = setInterval(function () {
+                    if (pre[0]) {
+                        pre.prev().animate({top:h}, 1000);
+                        pre = pre.prev();
+                    } else {
+                    };
+
+                    if (nex[0]) {
+                        nex.next().animate({top:h}, 1000);
+                        nex = nex.next();
+                    } else {
+                    };
+                    !pre[0] && !nex[0] ? clearInterval(timer) : '';
+                }, 100)
+            })
+        })();
+    </script>
+</body>
+</html>
