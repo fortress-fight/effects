@@ -132,7 +132,7 @@
 						$('#content input:text').val('');
 						$('#content textarea').val('');
 						(typeof fn !== 'undefined') && fn.call(this.obj, li);
-						return this.obj;
+						return this;
 					},
 					getTime: function () {
 						var time = new Date();

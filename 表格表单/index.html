@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		body {
+			margin: 0;
+		}
+		input {
+			outline: none;
+			padding: 0;
+			background: none;
+			border: none;
+		}
+		ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+		strong{
+			font-weight: inherit;
+		}
+		em {
+			font-style: normal;
+		}
+		#wrap {
+			position: absolute;
+			top: 0; left: 0; right: 0; bottom: 0;
+			margin: auto;
+			width: 700px;
+			height: 500px;
+			text-align: center;
+			background: url(img/bg.jpg) no-repeat;
+		}
+		#people {
+			box-sizing: border-box;
+			display: inline-block;
+			margin-top: 117px;
+			width: 460px; height: 120px;
+			border-radius: 15px;
+			background: #fff;
+			padding: 27px 0;
+			margin-bottom: 27px;
+		}
+		#people li {
+			float: left;
+			padding-left: 39px;
+			margin-bottom: 10px;
+			width: 184px;
+		}
+		#people li .inputName {
+			float: left;
+			padding-right: 14px;
+			line-height: 20px;
+			font: 600 14px/30px 'Arial';
+			color: #000;
+		}
+		#people li .inf {
+			box-sizing: border-box;
+			float: left;
+			padding: 0 18px;
+			width: 140px;
+			height: 30px;
+			border: 1px solid #8ce0ff;
+			border-radius: 15px;
+			font: 600 14px/30px 'Arial';
+			color: #6fd2ff;
+			text-align: left;
+		}
+		#people li .age {
+			width: 100px;
+		}
+
+		.genderInput {
+			position: relative;
+		}
+		.genderInput i {
+			position: absolute;
+			top: 13px; right: 12px;
+			width: 0; height: 0;
+			border: 5px solid transparent;
+			border-top-color: #19c2ff;
+		}
+		.genderInput i:before {
+			content: '';
+			position: absolute;
+			top: -5px; left: -5px;
+			margin-top: -10px;
+			margin-left: -10px;
+			width: 20px;
+			height: 20px;
+		}
+
+		#genList {
+			position: absolute;
+			top: calc(100% + 5px); right: 0;
+			border: 1px solid #8ce0ff;
+			border-radius: 15px;
+			width: 140px;
+			/*height: 0px;*/
+			line-height: 30px;
+			text-align: center;
+			color: #fff;
+			background: rgba(0,0,0,.5);
+			overflow: hidden;
+			display: none;
+		}
+
+		#genList span:hover {
+			cursor: pointer;
+		}
+
+
+
+
+
+
+
+
+		#add {
+			text-align: left;
+		}
+		#add input {
+			box-sizing: border-box;
+			width: 142px;
+			height: 30px;
+			border-radius: 15px;
+			text-align: center;
+			letter-spacing: 8px;
+			font: 600 14px/30px 'Arial';
+			color: #fff;
+			background-image: linear-gradient(135deg, #41c8ff 0, #41c8ff 25%,#46e6fe 75%);
+			box-shadow: 5px 5px 10px -5px #b9f6ff;
+		}
+
+		#title,
+		#list {
+			display: inline-block;
+			vertical-align: top;
+			width: 460px;
+		}
+
+		#title li,
+		#list li {
+			box-sizing: border-box;
+			margin-bottom: 2px;
+			padding: 0 20px;
+			overflow: hidden;
+			height: 32px;
+			font: 600 14px/32px 'Arial';
+			color: #8ce0ff;
+			background: #fff;
+			border-radius: 4px;
+		}
+
+		#title li span,
+		#list li span {
+			float: left;
+			vertical-align: middle;
+		}
+
+		.check {
+			width: 55px;
+		}
+		.check em {
+			float: left;
+			margin-right: 10px;
+			margin-top: 8px;
+			vertical-align: -2px;
+			width: 12px; height: 12px;
+			border: 1px solid #8ce0ff;
+		}
+
+		.id {
+			width: 40px;
+			text-align: center;
+		}
+
+		.lName {
+			width: 92px;
+		}
+		.lAge {
+			width: 56px;
+		}
+		.lgender {
+			width: 64px;
+		}
+		.lOp {
+			width: 112px;
+			text-align: center;
+		}
+
+
+		#title li {
+			background: rgba(0,0,0,.2);
+			color: #fff;
+		}
+
+		.toUp,
+		.toDown,
+		.del {
+			display: inline-block;
+			margin: 5px;
+			width: 24px;
+			height: 22px;
+			background: url(img/ico.gif) no-repeat;
+		}
+		.toDown {
+			background-position: 0 -24px;
+		}
+		.del {
+			background-position: 0 -48px;
+		}
+
+		.active {
+			background: #fb3;
+		}
+		#tip {
+			display: none;
+			margin: 0 auto;
+			width: 300px;
+			height: 50px;
+			text-align: center;
+			line-height: 50px;
+			font-size: 30px;
+			color: #fff;
+			background: #58a;
+		}
+	</style>
+	<script src = 'js/jquery-3.1.1.js'></script>
+</head>
+<body>
+	<p id="tip"></p>
+	<section id="wrap">
+		<ul id="people">
+			<li class="name">
+				<label class="inputName" for="name">姓名</label>
+				<input class="inf" type="text" name="name" id="name" value="LEO">
+			</li>
+			<li>
+				<label class="inputName" for="age">年龄</label>
+				<input class="inf age" type="text" name="age" id="age" value="32">
+			</li>
+			<li class="genderInput">
+				<strong class="inputName">性别</strong>
+				<em class="inf" id="gender">男</em>
+				<i></i>
+				<div id="genList">
+					<span>男</span>
+					<span>女</span>
+					<span>保密</span>
+				</div>
+			</li>
+			<li id="add">
+				<input type="submit" value="添加">
+			</li>
+		</ul>
+
+		<ul id="title">
+			<li>
+				<span class="check">
+					<em></em>
+					<strong>全选</strong>
+				</span>
+				<span class="id">ID</span>
+				<span class="lName">姓名</span>
+				<span class="lAge">年龄</span>
+				<span class="lgender">性别</span>
+				<span class="lOp">操作</span>
+			</li>
+		</ul>
+
+		<ul id="list">
+
+			<!-- <li>
+				<span class="check">
+					<em class="cBox"></em>
+				</span>
+				<span class="id">1</span>
+				<span class="lName">LEO</span>
+				<span class="lAge">26</span>
+				<span class="lgender">男</span>
+				<span class="lOp">
+					<i class="toUp"></i>
+					<i class="toDown"></i>
+					<i class="delete"></i>
+				</span>
+			</li> -->
+		</ul>
+	</section>
+	<script>
+
+		;(function(){
+			;(function(global, factory){
+				factory(global);
+			})(window, function (global, noGlobal) {
+				function Table (selector) {
+					return new Table.prototype.inite(selector);
+				};
+				Table.prototype = {
+					constructor: Table,
+					inite: function (selector) {
+						this.obj = selector;
+					},
+					setData: function () {
+						this.data = [];
+						this.data.name = $('#people input[name = name]').val();
+						this.data.age = $('#people input[name = age]').val();
+						this.data.gen = $('#gender').text();
+						if (this.data.name && this.data.age && this.data.gen) {
+							return this.data;
+						} else {
+							return false;
+						}
+					},
+					clear: function () {
+						$('#people input[name = name]').val('');
+						$('#people input[name = age]').val('');
+						 // $('#gender').text('');
+						return this;
+					},
+					dealData: function (data) {
+						this.data = data;
+						var li = $('<li></li>')
+						var str = 	'<span class="check">\
+										<em></em>\
+									</span>\
+									<span class="id">1</span>\
+									<span class="lName">'+ this.data.name +'</span>\
+									<span class="lAge">'+ this.data.age +'</span>\
+									<span class="lgender">'+ this.data.gen +'</span>\
+									<span class="lOp">\
+										<i class="toUp"></i>\
+										<i class="toDown"></i>\
+										<i class="del"></i>\
+									</span>'
+						li.html(str);
+						li.appendTo(this.obj);
+						$('#title .check em').removeClass('active');
+						return this;
+					},
+					setId: function () {
+						this.obj.find('.id').each(function (i, e) {
+							$(e).html(i+1);
+						})
+					}
+
+				};
+				Table.barEv = function (ev) {
+					var target = $(ev.target);
+
+					switch (target[0].className) {
+						case 'chasdfeck':
+						console.log(target)
+							$(target).find('em').toggleClass('active');
+							$('#list li').find('em').toggleClass('active');
+							break;
+						default:
+							if (target[0].tagName.toLowerCase() == 'em') {
+								if ($(target).is('.active')) {
+									$(target).removeClass('active')
+									$('#list li').find('em').removeClass('active');
+								} else {
+									$(target).addClass('active')
+									$('#list li').find('em').addClass('active');
+								}
+							}
+							break;
+					}
+				};
+				Table.conEv = function (ev) {
+					var target = $(ev.target);
+					var par = target.parents('li');
+
+					switch (target[0].className) {
+						case 'chesdck':
+							$(target).find('em').toggleClass('active');
+							$('#list li').find('em').toggleClass('active');
+							break;
+						case 'del':
+							par.detach();
+							var $allEm = $('#list em');
+							$allEm.each(function (i, em) {
+								if (!$(em).hasClass('active')) {
+									$('#title .check em').removeClass('active');
+									return false;
+								}
+								$('#title .check em').addClass('active');
+							})
+							break;
+						case 'toUp':
+						console.log('up')
+							par.insertBefore(par.prev());
+							break;
+						case 'toDown':
+							par.insertAfter(par.next());
+							break;
+						default:
+							if (target[0].tagName.toLowerCase() == 'em') {
+								$(target).toggleClass('active');
+								var $allEm = $('#list em');
+								$allEm.each(function (i, em) {
+									if (!$(em).hasClass('active')) {
+										$('#title .check em').removeClass('active');
+										return false;
+									}
+									$('#title .check em').addClass('active');
+								})
+							}
+							break;
+					}
+				};
+				Table.prototype.inite.prototype = Table.prototype;
+				window.T = window.Table = Table;
+
+			});
+
+			var tools = (function(){
+				var tool = {
+					init: {
+						timer: null
+					},
+					tip: function (str, onOff) {
+						if (this.init.timer) {
+							return;
+						}
+						color = onOff ? '#58a' : '#fb3'
+						$('#tip').css('background', color);
+						$('#tip').slideDown(400)
+						timer = setTimeout(function () {
+							clearTimeout(timer);
+							timer = null;
+							$('#tip').slideUp(400)
+						}, 2000);
+						$('#tip').text(str)
+					}
+				}
+				return tool;
+			})();
+
+
+			$('.genderInput i').click(function () {
+				$(this).next().show(500);
+			});
+			$('#genList').on('click', 'span', function () {
+				$(this).parent().siblings('em')
+				.html($(this).text())
+				$(this).parent().hide(500);
+			});
+			$('input:submit').click(function () {
+				var onOff = T($('#list')).setData();
+				if (onOff) {
+			    	tools.tip('恭喜创建成功',true);
+					T($('#list')).clear().dealData(onOff).setId();
+				} else {
+				    tools.tip('请输入完整内容',false);
+				}
+			});
+			$('#title').click(function (ev) {
+				Table.barEv(ev)
+			});
+
+			$('#list').click(function (ev) {
+				Table.conEv(ev)
+			})
+		})();
+
+
+	</script>
+</body>
+</html>

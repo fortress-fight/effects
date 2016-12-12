@@ -98,12 +98,13 @@
 			var len = Math.floor(Math.random() * 101 + 39);
 			for (var i = 0; i < len; i++) {
 				if ( i > len / 2) {
-					arr.push(Math.max((i-len/2)*2,20))
+					arr.push(Math.max((i-len/2)*5,20))
 				} else {
 
-					arr.unshift(Math.max((i*2), 20))
+					arr.unshift(Math.max((i*5), 20))
 				}
 			}
+			console.log(arr);
 			return arr;
 		}
 		
