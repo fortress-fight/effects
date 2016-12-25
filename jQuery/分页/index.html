@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		#div1 {
+
+		}
+		a {
+			display: inline-block;
+			border: 1px solid black;
+			padding: 5px 10px;
+			margin: 0 10px;
+		}
+
+	</style>
+</head>
+<body>
+	<div id="div1">
+		<!-- <a href="#1">首页</a>
+		<a href="#3">上一页</a>
+		<a href="#2">[2]</a>
+		<a href="#3">[3]</a>
+		<a href="#4">4</a>
+		<a href="#5">[5]</a>
+		<a href="#6">[6]</a>
+		<a href="#5">下一页</a>
+		<a href="#10">尾页</a> -->
+	</div>
+</body>
+<script>
+/**
+ * 分页效果
+ * @param  {string} selcetor 一个id，使用的是getElementById
+ * @param  {json} json [配置参数，默认第一页，总页数为0，一组有0个]
+ * @return {[type]}          [description]
+ */
+	function dPage (selcetor, json) {
+		this.obj = document.getElementById(selcetor);
+		console.log(this.obj)
+		// this.pages = this.obj.getElementsByTagName('a');
+		this.set = {
+			now: 1,
+			all: 0,
+			groupNum: 0
+		}
+		this.inite(json);
+	}
+	dPage.prototype = {
+		constructor: dPage,
+		inite: function (json) {
+			for (attr in json) {
+				this.set[attr] = json[attr]
+			};
+			this.setPage();
+		},
+		/*setPage: function () {
+			var str = '',
+				half = this.set.groupNum % 2 == 0 ? this.set.groupNum/2 : (this.set.groupNum-1)/2,
+				next = this.set.now,
+				dis = this.set.all - this.set.groupNum,
+				prev = (dis) > this.set.now ? Math.max(1, this.set.now-half):  (dis);
+			while (prev <= this.set.now && prev > 0 ) {
+				str += '<a>'+  prev +'</a>';
+				prev++;
+			}
+			while (next < (this.set.now + half) && next < (this.set.all)) {
+				next ++;
+				console.log(next)
+				str += '<a>'+ next +'</a>';
+			}
+			this.obj.innerHTML = str;
+		},*/
+
+		// 思路：一组总数是一定的，前面或者后面每添加一个，名额就少一个，当没有了的时候就停止添加
+		setPage: function() {
+			var str = '',
+				fistPage = '',
+				lastPage = '',
+				groupNum = this.set.groupNum,
+				prev = this.set.now,
+				next = this.set.now;
+			while (groupNum != 0) {
+				if (prev > 0) {
+					str = '<a attr = "' + prev + '">'+ prev +'</a>'+ str;
+					prev --;
+					groupNum--;
+				}
+				if (groupNum != 0 && next < this.set.all) {
+					next++;
+					str += '<a attr = "' + next + '">'+ next +'</a>';
+					groupNum--;
+				}
+			}
+			if (prev > 1) {
+				fistPage = '<a attr = "1">'+ '首页' +'</a>'
+			}
+			if (next < this.set.all) {
+				lastPage = '<a attr = "'+ this.set.all +'">'+ '尾页' +'</a>'
+			}
+			this.obj.innerHTML = fistPage + str + lastPage;
+		},
+		turnPage: function () {
+
+		}
+	}
+
+	var dPage = new dPage('div1', {
+		groupNum: 7,
+		all: 20
+	});
+
+
+</script>
+</html>

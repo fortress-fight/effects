@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		#box1,#box2 {
+			width: 400px;
+			height: 350px;
+			margin: 20px auto;
+			overflow: hidden;
+		}
+		.nav {
+			display: table;
+			width: 100%;
+			height: 50px;
+		}
+		.nav span {
+			display: table-cell;
+			text-align: center;
+			line-height: 50px;
+			border: 1px solid black;
+		}
+		.con div {
+			border: 1px solid black;
+			height: 300px;
+			background: #58a;
+			color: #fff;
+			line-height: 300px;
+			text-align: center;
+			font-size: 100px;
+		}
+		.active {
+			background-color: #fb3;
+		}
+		.con .show {
+			display: block;
+		}
+		.con div {
+			display: none;
+		}
+	</style>
+</head>
+<body>
+	<div id="box1">
+		<div class="nav">
+			<span class="active">选项1</span>
+			<span>选项2</span>
+			<span>选项3</span>
+		</div>
+		<div class="con">
+			<div class = "show">1</div>
+			<div>2</div>
+			<div>3</div>
+		</div>
+	</div>
+	<div id="box2">
+		<div class="nav">
+			<span class="active">选项1</span>
+			<span>选项2</span>
+			<span>选项3</span>
+		</div>
+		<div class="con">
+			<div class = "show">1</div>
+			<div>2</div>
+			<div>3</div>
+		</div>
+	</div>
+	<script>
+		// var oBox = null;
+		// var nav = null;
+		// var aSpan = null;
+		// var con = null;
+		// var aCon = null;
+		// var old = null;
+		// window.onload = function(){
+		// 	oBox = document.getElementById("box1");
+		// 	nav = oBox.getElementsByTagName("div")[0];
+		// 	aSpan = nav.getElementsByTagName("span");
+		// 	con = oBox.getElementsByTagName("div")[1];
+		// 	aCon = con.getElementsByTagName("div");
+		// 	old = 0;
+		// 	init ();
+		// }
+		// function init () {
+		// 	for (var i = 0; i < aSpan.length; i++) {
+		// 		aSpan[i].index = i;
+		// 		aSpan[i].onmouseover = change;
+		// 	}
+		// }
+		// function change () {
+		// 	aSpan[old].className = "";
+		// 	aCon[old].className = "";
+		// 	this.className = "active";
+		// 	aCon[this.index].className = "show";
+		// 	old = this.index;
+		// }
+
+		window.onload = function () {
+			var tab1 = new tab("box1");
+			tab1.init();
+
+			var tab2 = new tab("box2");
+			tab2.autoPlay();
+		}
+		function tab (obj) {
+			this.oBox = document.getElementById(obj);
+			this.nav = this.oBox.getElementsByTagName("div")[0];
+			this.aSpan = this.nav.getElementsByTagName("span");
+			this.con = this.oBox.getElementsByTagName("div")[1];
+			this.aCon = this.con.getElementsByTagName("div");
+			this.old = 0;
+			this.now = 0;
+		}
+		tab.prototype.init = function(){
+			for (var i = 0; i < this.aSpan.length; i++) {
+				var This = this;
+				this.aSpan[i].index = i;
+				this.aSpan[i].onmouseover = function () {
+					console.log(this)
+					This.change(this);
+				};
+			}
+		};
+		tab.prototype.change = function(obj){
+			this.aSpan[this.old].className = "";
+			this.aCon[this.old].className = "";
+			obj.className = "active";
+			this.aCon[obj.index].className = "show";
+			this.old = obj.index;
+		};
+		tab.prototype.autoPlay = function (obj) {
+			var This = this;
+			setInterval(function () {
+				This.aSpan[This.old].className = "";
+				This.aCon[This.old].className = "";
+				This.aSpan[This.now].className = "active";
+				This.aCon[This.now].className = "show";
+				This.old = This.now;
+				This.now ++;
+				This.now = This.now % (This.aSpan.length);
+			}, 500)
+		}
+	</script>
+</body>
+</html>

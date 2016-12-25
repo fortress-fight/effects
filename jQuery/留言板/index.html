@@ -127,6 +127,7 @@
 										<p>'+ $('#content textarea').val() +'</p>\
 									</div>';
 						var li = $('<li>' + str + '</li>');
+						li.css({'transform':'rotate(0deg)'})
 						var $span = $('header .delet');
 						this.obj.prepend(li);
 						$('#content input:text').val('');
@@ -202,8 +203,10 @@
 						var p = obj.find('p');
 
 						index++;
-
-						obj.css('transform','rotateY(0deg)');
+						//console.log(111)
+						setTimeout(function(){
+							obj.css('transform','rotateY(20deg)');
+						},1000)
 
 						if (typeof delet !== 'undefined') {
 
